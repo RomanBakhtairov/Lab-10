@@ -49,20 +49,20 @@ class Recognize:
                     yield answer['text']
 
 
-def speak(text):
+def speak(text, rec):
     speech = Speech()
     speech.text2voice(speaker=1, text=text)
 
-
-rec = Recognize()
-text_gen = rec.listen()
-rec.stream.stop_stream()
-speak('Starting')
-time.sleep(0.5)
-rec.stream.start_stream()
-for text in text_gen:
-    if text == 'закрыть':
-        speak('Бывай, ихтиандр')
-        quit()
-    else:
-        print(text)
+if __name__ == "__main__":
+    rec = Recognize()
+    text_gen = rec.listen()
+    rec.stream.stop_stream()
+    speak('Starting')
+    time.sleep(0.5)
+    rec.stream.start_stream()
+    for text in text_gen:
+        if text == 'close':
+            speak('Goodbuy, ihtiander')
+            quit()
+        else:
+            print(text)
