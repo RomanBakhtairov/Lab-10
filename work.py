@@ -1,4 +1,4 @@
-import json, time, pyttsx3, pyaudio, vosk, requests, os, cv2
+import json, time, pyttsx3, pyaudio, vosk, requests, os, cv2, webbrowser
 from main import Recognize, AloudSpeaker
 
 
@@ -6,14 +6,14 @@ from main import Recognize, AloudSpeaker
 COMMANDS = [{"id":0, "trig": "find", "func":lambda : speak('Please say the word you`re looking for',rec ) },
             {"id":1, "trig": "save", "func": lambda: beginner.ReturnExecutor().save()},
             {"id":2, "trig": "meaning", "func": lambda: beginner.ReturnExecutor().meaning() },
-            {"id":3, "trig": "example" },
-            {"id":3, "trig": "link" }
+            {"id":3, "trig": "example", "func": lambda: beginner.ReturnExecutor().example() },
+            {"id":4, "trig": "link", "func": lambda: beginner.ReturnExecutor().link()  }
             ]
 
 class Listener:
     def __init__(self,rec) -> None:
         self.rec = rec
-        self.executor = Executor('example',rec, False)
+        self.executor = Executor('dog',rec, False)
         
 
     def SetTextReciver(self, rec_text_gen):
@@ -25,7 +25,7 @@ class Listener:
     def StartDetecting(self):
         command = COMMANDS[0]
         preparingToFind = False
-        self.executor.do(COMMANDS[2])
+ #       self.executor.do(COMMANDS[4]) - There you can try some test commands
         for text in self.text_gen:
             gotten_command = self.executor.check(text)
             print(text)
@@ -69,6 +69,7 @@ class Executor:
         speak("we saved it!",rec )
     #
     #
+    #
     def meaning(self):
          data = json.loads(self.myData)
          data = data[0]
@@ -80,6 +81,26 @@ class Executor:
          speak("Of corse! The word" + str(data["word"]) + ' mean ' + means ,rec )
     #
     #
+    # 
+    def link(self):
+        speak("Of course. I am opening for you link in browser" ,rec )
+        webbrowser.open(self.path, new=2)
+    #
+    #
+    #
+    def example(self):
+         data = json.loads(self.myData)
+         data = data[0]
+         example  =  data['meanings']
+         example = example[0]
+         example = example["definitions"]
+         example = example[0]
+         try:
+            example = example["example"]
+            speak("Of course! There is example of the word " + str(data["word"]) + ': ' + example ,rec )
+         except:
+            speak("Sorry, there are not any examples of the word " + str(data["word"]),rec)
+
 
 
 
