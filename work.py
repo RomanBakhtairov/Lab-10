@@ -47,7 +47,6 @@ class Executor:
         if need_we_write:
             speak("I find information about word "+ wordname + 
                   "I can show you meaning, save the date, show example or give you link to the word", rec)
-            print( str(self.myData))
 
     def check(self, text):
         for command in COMMANDS[1:]:
@@ -66,7 +65,7 @@ class Executor:
         f = open("notions.txt", "a")
         f.write('\n' + str(self.myData))
         f.close()
-        speak("we saved it!",rec )
+        speak("we saved it in notions.txt!",rec )
     #
     #
     #
@@ -101,14 +100,6 @@ class Executor:
          except:
             speak("Sorry, there are not any examples of the word " + str(data["word"]),rec)
 
-
-
-
-
-    
-            
-    
-
 def speak(text, rec):
     speech = AloudSpeaker()
     rec.stream.stop_stream()
@@ -117,21 +108,9 @@ def speak(text, rec):
     rec.stream.start_stream()
           
 
-
-
-
 rec = Recognize()
 beginner = Listener(rec)
 text_gen = rec.listen()
 beginner.SetTextReciver(text_gen)
+speak("Hi! To start working say command find and after it say the word you want to find, please, do it separately",rec)
 beginner.StartDetecting()
-
-# req =  requests.get("https://rickandmortyapi.com/api/character/avatar/108.jpeg")
-# with open('img.jpeg','wb') as f:
-#     f.write(req.content)
-
-
-# img = cv2.imread('img.jpeg')
-# cv2.imshow('name', img)
-# cv2.waitKey(0)
-# del('/')
